@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/mavenproject4/layout.xhtml">
+    <ui:define name="Center">
+        <h:head>
+            <style type="text/css">
+                .cheap {
+                    background-color: #a2f05d !important;
+
+                }
+                
+            </style>
+        </h:head>
+        <p:panel header="Current Stories">
+            <f:facet name="header">
+                <p:panelGrid columns="7"  style="float: left;">
+                    <h:outputText value="Current Stories"/>
+                </p:panelGrid>
+            </f:facet>
+            
+            <h:form id="form">
+
+                <p:dataTable id="dt2" value="#{story2Controller.storyList}" var="s" paginator="true" rows="10" paginatorPosition="bottom"
+                             selectionMode="single" selection="#{story2Controller.story}" rowKey="#{s.id}" rowStyleClass="#{s.status eq 'Accepted' ? 'cheap' : null}">
+                    <p:ajax event="rowSelect" listener="#{story2Controller.onRowSelect}" update=":form:storyDetail"
+                            oncomplete="PF('storyDialog').show()"/>
+                    <p:column field="id" headerText="Id" sortBy="#{s.id}" filterBy="#{s.id}" width="60px">
+                        <f:facet name="header">Id</f:facet>   	
+                            #{s.id}
+                    </p:column>
+
+                    <p:column field="points" headerText="Points" sortBy="#{s.points}" filterBy="#{s.points}" width="100px">
+                        <f:facet name="header">Points</f:facet>   	
+                            #{s.points}
+                    </p:column>
+
+                    <p:column field="storyName" headerText="Story Name" sortBy="#{s.storyName}" filterBy="#{s.storyName}" width="250px">
+                        <f:facet name="header">Story Name</f:facet>   	
+                            #{s.storyName}
+                    </p:column>
+
+                    <p:column field="description" headerText="Description" filterBy="#{s.description}">
+                        <f:facet name="header">Description</f:facet>   	
+                            #{s.description}
+                    </p:column>
+
+
+                </p:dataTable>
+
+                <p:dialog header="Story Detail" widgetVar="storyDialog" modal="false" showEffect="fade"
+                          hideEffect="fade" resizable="false">
+                    <p:outputPanel id="storyDetail" style="text-align:center;">
+                        <p:panelGrid columns="2" rendered="#{not empty story2Controller.story}"
+                                     columnClasses="label,value">
+                            <h:outputText value="Name:"/>
+                            <h:outputText value="#{story2Controller.story.storyName}"/>
+
+                            <h:outputText value="Type:"/>
+                            <h:outputText value="#{story2Controller.story.storyType}"/>
+
+                            <h:outputText value="Status:"/>
+                            <h:outputText value="#{story2Controller.story.status}"/>
+
+                            <h:outputText value="Points:"/>
+                            <h:outputText value="#{story2Controller.story.points}"/>
+
+                            <h:outputText value="Requestor:"/>
+                            <h:outputText value="#{story2Controller.story.requestor}"/>
+
+                            <h:outputText value="Developer:"/>
+                            <h:outputText value="#{story2Controller.story.developer}"/>
+
+                            <h:outputText value="Reviewer:"/>
+                            <h:outputText value="#{story2Controller.reviewerNames1()}"/>
+
+                            <h:outputText value="Description:"/>
+                            <h:outputText value="#{story2Controller.story.description}"/>
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+
+                </p:dialog>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
